@@ -5,9 +5,9 @@ import tensorflow as tf
 import io
 
 app = Flask(__name__)
-
+https://github.com/Riya-mehta2/OralApi/edit/main/app.py#L10C53
 # Load the TFLite model
-interpreter = tf.lite.Interpreter(model_path="modelss\model (1).tflite")
+interpreter = tf.lite.Interpreter(model_path="modelss/model (1).tflite")
 interpreter.allocate_tensors()
 
 # Get input and output details
