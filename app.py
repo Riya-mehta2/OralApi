@@ -7,7 +7,7 @@ import io
 app = Flask(__name__)
 
 # Load the TFLite model
-interpreter = tf.lite.Interpreter(model_path="modelss\model (1).tflite")
+interpreter = tf.lite.Interpreter(model_path="modelss\ourmodel.tflite")
 interpreter.allocate_tensors()
 
 # Get input and output details
