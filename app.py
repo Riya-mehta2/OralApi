@@ -1,12 +1,13 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, jsonify
 import numpy as np
 from PIL import Image
 import tensorflow as tf
 import io
 
 app = Flask(__name__)
+
 # Load the TFLite model
-interpreter = tf.lite.Interpreter(model_path="modelss/ourmodel.tflite")
+interpreter = tf.lite.Interpreter(model_path="modelss\ourmodel.tflite")
 interpreter.allocate_tensors()
 
 # Get input and output details
@@ -21,14 +22,10 @@ def preprocess_image(image_bytes):
     img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
     return img_array
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
 @app.route('/predict', methods=['POST'])
 def predict():
     if 'image' not in request.files:
-        return render_template('index.html', result={'class': 'No image uploaded', 'confidence': 'N/A'})
+        return jsonify({'class': 'No image uploaded', 'confidence': 'N/A'})
 
     image_file = request.files['image']
     image_bytes = image_file.read()
@@ -43,13 +40,13 @@ def predict():
     confidence = float(output_data[0][0])
     predicted_class = 1 if confidence >= 0.5 else 0
 
-
     result = {
         "class": "Oral Cancer" if predicted_class == 1 else "No Oral Cancer",
         "confidence": f"{confidence:.2f}"
     }
 
-    return render_template('index.html', result=result)
+    return jsonify(result)
 
 if __name__ == '__main__':
     app.run(debug=True)
+
